@@ -17,51 +17,58 @@
 		console.log(React);
 		console.log(ReactDOM);
     
-    // function 컴포넌트 이벤트 핸들링
-    // function Component () {
-    //   return (
-    //     <div>
-    //       <button 
-    //         onClick={() => {
-    //         console.log("clicked");
-    //         }}
-    //       >
-    //         클릭
-    //       </button>
-    //     </div>
-    //   )
-    // }
-
-    class Component extends React.Component{
+    class App extends React.Component {
       state = {
-        count: 0,
+        age: 23,
       };
+      interval = null;
+      constructor(props) {
+        super(props);
 
-      // constructor(props) {
-      //   super(props);
-
-      //   this.click= this.click.bind(this);
-      // }
-
+        console.log('constructor', props); // 1번
+      }
       render() {
+        console.log('render'); // 3번
         return (
           <div>
-            <p>{this.state.count}</p>
-            <button onClick={this.click}>클릭</button>
+            <h2>
+              Hello {this.props.name} - {this.state.age}
+            </h2>
           </div>
         );
       }
+      componentWillMount() {
+        console.log('componentWillMount'); // 2번
+      }
+      componentDidMount() {
+        console.log('componentDidMount'); // 4번
 
-      click = () => {
-        console.log("clicked");
-        this.setState((state) => ({
-          ...state,
-          count: state.count + 1,
-        }));
+        this.interval = setInterval(() => {
+          // console.log('setInterval');
+          this.setState(state => ({...state, age: state.age + 1 })) // state가 변경될 때마다 render가 찍힘
+        }, 1000);
+      }
+      componentWillReceiveProps(nextProps) {
+        console.log("componentWillReceiveProps", nextProps);
+      }
+      shouldComponentUpdate(nextProps, nextState) {
+        console.log("shouldComponentUpdate", nextProps, nextState);
+
+        return true;
+        // return flase;
+      }
+      componentWillUpdate(nextProps, nextState) {
+        console.log("componentWillUpdate", nextProps, nextState);
+      }
+      componentDidUpdate(prevProps, prevState) {
+        console.log("componentDidUpdate", prevProps, prevState);
+      }
+      componentWillUnmount() {
+        clearInterval(this.interval);
       }
     }
 
-    ReactDOM.render(<Component />, document.querySelector('#root'));
+    ReactDOM.render(<App name="dongdu" />, document.querySelector('#root'))
 	</script>
 </body>
 

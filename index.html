@@ -18,35 +18,59 @@
 		console.log(ReactDOM);
     
     // props를 사용한 함수 컴포넌트
-    function Component(props) {
-      return (
-        <div>
-          <h1>{props.message} 이것은 함수로 만들어진 컴포넌트입니다.</h1>
-        </div>
-      );
-    }
+    // function Component(props) {
+    //   return (
+    //     <div>
+    //       <h1>{props.message} 이것은 함수로 만들어진 컴포넌트입니다.</h1>
+    //     </div>
+    //   );
+    // }
     
     // props를 사용한 클래스 컴포넌트
-    // class Component extends React.Component {
-    //   render() {
-    //     return (
-    //     <div>
-    //       <h1>{this.props.message} 이것은 클래스로 만들어진 컴포넌트입니다.</h1>
-    //     </div>
-    //     );
-    //   }
+    class Component extends React.Component {
+      // state = { // 항상 객체
+      //   count: 0,
+      // }
 
-    //   static defaultProps = {
-    //     message: '기본값2',
-    //   }
-    // }
+      constructor(props) {
+        super(props);
 
-    Component.defaultProps = {
-      message: '기본값'
+        this.state = { count: 0 }
+      }
+
+      render() {
+        return (
+        <div>
+          <h1>{this.props.message} 이것은 클래스로 만들어진 컴포넌트입니다.</h1>
+          <p>{this.state.count}</p>
+        </div>
+        );
+      }
+
+      componentDidMount() {
+        setTimeout(() => {
+        //   this.setState({
+        //     count: this.state.count + 1,
+        //   });
+        
+          this.setState((previousState) => {
+            const newState = { count: previousState.count + 1 }
+            return newState;
+          })
+        }, 1000);
+      }
+
+      static defaultProps = {
+        message: '기본값2',
+      }
     }
+
+    // Component.defaultProps = {
+    //   message: '기본값'
+    // }
     
     ReactDOM.render(
-      <Component />,
+      <Component message="기본값 아님"/>,
       document.querySelector('#root')
     )
 
